@@ -1,0 +1,3 @@
+[submodule "matrixvoice/src/libmatrixcreatorhal"]
+	path = matrixvoice/src/libmatrixcreatorhal
+	url = https://github.com/matrix-io/matrix-creator-hal.git
