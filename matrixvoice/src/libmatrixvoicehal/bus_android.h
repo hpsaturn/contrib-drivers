@@ -21,6 +21,8 @@
 #include <stdint.h>
 #include <string>
 #include "./bus.h"
+#include <pio/spi_device.h>
+#include <pio/peripheral_manager_client.h>
 
 namespace matrix_hal {
 
@@ -48,6 +50,7 @@ class BusAndroid : public Bus {
   unsigned int spi_bits_;
   uint32_t spi_speed_;
   unsigned int spi_delay_;
+  APeripheralManagerClient* client_;
 };
 };      // namespace matrix_hal
 #endif  // CPP_DRIVER_BUS_ANDROID_H_

@@ -29,19 +29,12 @@
 #include <android/log.h>
 #include <android/looper.h>
 
-#include <pio/spi_device.h>
-#include <pio/peripheral_manager_client.h>
-
-#include "AndroidSystemProperties.h"
-
 const char* TAG = "bus_android";
 #define LOGV(...) __android_log_print(ANDROID_LOG_VERBOSE, TAG, __VA_ARGS__)
 #define LOGW(...) __android_log_print(ANDROID_LOG_WARN, TAG, __VA_ARGS__)
 #define LOGI(...) __android_log_print(ANDROID_LOG_INFO, TAG, __VA_ARGS__)
 #define LOGE(...) __android_log_print(ANDROID_LOG_ERROR, TAG, __VA_ARGS__)
 #define ASSERT(cond, ...) if (!(cond)) { __android_log_assert(#cond, TAG, __VA_ARGS__);}
-
-
 
 
 namespace matrix_hal {
@@ -63,10 +56,10 @@ BusAndroid::~BusAndroid() {
 }
 bool BusAndroid::Init(std::string device_name) {
 
-  APeripheralManagerClient* client = APeripheralManagerClient_new();
-  ASSERT(client, "failed to open peripheral manager client");
+  client_ = APeripheralManagerClient_new();
+  ASSERT(client_, "failed to open peripheral manager client");
   int num_spi_buses;
-  char ** listSpiBuses = APeripheralManagerClient_listSpiBuses(client, &num_spi_buses);
+  char ** listSpiBuses = APeripheralManagerClient_listSpiBuses(client_, &num_spi_buses);
   ASSERT(num_spi_buses == 0, "failed to get SPI list buses");
 
   return true;
@@ -92,5 +85,9 @@ bool BusAndroid::Write(uint16_t add, unsigned char *data, int length) {
   return false;
 }
 
-void BusAndroid::Close(void) { close(spi_fd_); }
+void BusAndroid::Close(void) { 
+  APeripheralManagerClient_delete(client_);
+  close(spi_fd_); 
+}
+
 };  // namespace matrix_hal
