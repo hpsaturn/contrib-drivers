@@ -19,17 +19,18 @@ apply plugin: 'com.android.library'
 android {
     compileSdkVersion DEFAULT_COMPILE_SDK_VERSION
 
-    defaultConfig {
+      defaultConfig {
         minSdkVersion DEFAULT_MIN_SDK_VERSION
         targetSdkVersion DEFAULT_TARGET_SDK_VERSION
-
+        
         externalNativeBuild {
-            cmake {
-                cppFlags "-DCMAKE_SYSTEM_NAME=Android"
-                abiFilters 'armeabi-v7a'
-            }
+          cmake {
+            arguments "-DPROJECT_DIR=${rootProject.projectDir}"
+            cppFlags "-DCMAKE_SYSTEM_NAME=Android"
+            abiFilters 'armeabi-v7a'
+          }
         }
-    }
+      }
 
     externalNativeBuild {
         cmake {
